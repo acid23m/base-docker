@@ -6,6 +6,8 @@ services:
     image: nginx:latest
     environment:
       VIRTUAL_HOST: ${SITE_DOMAIN}
+      LETSENCRYPT_HOST: ${LE_HOST}
+      LETSENCRYPT_EMAIL: ${MAIN_USER_EMAIL}
       VIRTUAL_PORT: 443
       VIRTUAL_PROTO: https
       HSTS: 'max-age=3600; includeSubDomains; preload'
@@ -42,12 +44,12 @@ services:
     depends_on:
       - db
   db:
-    container_name: ${COMPOSE_PROJECT_NAME}_web
+    container_name: ${COMPOSE_PROJECT_NAME}_db
     image: postgres:10
     environment:
-      POSTGRES_DB: ${DB_NAME_DEV}
-      POSTGRES_USER: ${DB_USER_DEV}
-      POSTGRES_PASSWORD: ${DB_PASSWORD_DEV}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./conf/postgresql:/etc/postgresql/10/main/conf.d
       - ./db/postgresql/data:/var/lib/postgresql/data
