@@ -17,7 +17,7 @@ ENV LANG en_US.utf8
 RUN apt update && \
     apt dist-upgrade -y && \
     apt full-upgrade -y && \
-    apt install -ym --no-install-recommends \
+    apt install -ym --no-install-recommends --no-install-suggests \
         software-properties-common \
         wget \
         curl \
@@ -25,7 +25,7 @@ RUN apt update && \
         git && \
     add-apt-repository ppa:ondrej/php && \
     apt update && \
-    apt install -ym --no-install-recommends \
+    apt install -ym --no-install-recommends --no-install-suggests \
         php7.2 \
         php7.2-bz2 \
         php7.2-cli \
@@ -59,6 +59,10 @@ RUN apt update && \
     apt autoclean -y && \
     apt autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir -p /var/log/php /var/log/fpm && \
+    touch /var/log/php/error.log /var/log/fpm/fpm.log && \
+    ln -sf /dev/stderr /var/log/php/error.log
 
 CMD ["/usr/sbin/php-fpm7.2"]
 
