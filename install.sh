@@ -80,7 +80,7 @@ docker exec -i \
 docker exec -i \
     -w /app \
     ${container_fpm} \
-    php ./yii access/user/create $MAIN_USER_NAME $MAIN_USER_EMAIL $MAIN_USER_PASSWORD root --force=yes
+    php ./yii access/user/create "$MAIN_USER_NAME" "$MAIN_USER_EMAIL" "$MAIN_USER_PASSWORD" root --force=yes
 
 # app dir permissions
 if [[ $(id -u) -eq 0 ]]; then

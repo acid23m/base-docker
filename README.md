@@ -1,12 +1,12 @@
 # Dockerized Yii based application
 
-All operations must be done in project directory.
+All operations must be done in project directory root.
 Web application always use HTTPS protocol.
+It is recommended to use this with [nginx-proxy](https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion).
 
 ## Configuration
 
-First of all define global environment variables
-in .env file.
+First of all define global environment variables in .env file.
 Create .env file from template .env.example.
 
 ```bash
@@ -27,7 +27,7 @@ nano ./app/environments/prod/common/main-local.php
 Use script *run.sh* to create and launch docker containers.
 
 ```bash
-./run.sh
+./start.sh
 ```
 
 ## Install
@@ -41,9 +41,9 @@ Use script *install.sh* to install application.
 ## Structure
 
 - **/app**: site directory. The owner of this folder must be *{$USER}:www-data*.
-- **/bin**: executable scripts.
+- **/bin**: executable files.
 - **/conf**: software settings.
-- **/db**: database\'s data and backups.
+- **/db**: database\'s backups.
 - **/logs**: server logs.
 
 It is recommend store attributes of files/folders
@@ -58,3 +58,15 @@ or
 ```bash
 rsync -av wuser@123.456.789.000:/var/www/my-site.com /home/user/backup/
 ```
+
+## Scripts
+
+- **start.sh**: launch application - start containers and create volume.
+- **stop.sh**: stop application - stop and remove containers.
+- **install.sh**: deploy application.
+- **change-mode.sh**: change application mode (*prod|dev*) defined in .env.
+- **command.sh**: start command line inside app container at */app* work directory.
+- **composer-update.sh**: update application packages.
+- **backup-db.sh**: create gziped tar archive *backup-\[Ymd\]).tgz* at *./db/backup* directory from volume.
+- **restore-db.sh**: unpack archive at *./db/backup* directory to volume.
+STOP CONTAINERS BEFORE RESTORE!
