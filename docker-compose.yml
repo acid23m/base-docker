@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   web:
@@ -45,15 +45,14 @@ services:
       - db
   db:
     container_name: ${COMPOSE_PROJECT_NAME}_db
-    image: postgres:10
+    image: postgres:11-alpine
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./conf/postgresql:/etc/postgresql/10/main/conf.d
-      - ./db/postgresql/data:/var/lib/postgresql/data
-      - ./db/postgresql/backup:/backup
+      - db-data:/var/lib/postgresql/data
       - ./logs/postgresql:/var/log/postgresql
     restart: ${RESTART_MODE}
 
@@ -61,3 +60,7 @@ networks:
     default:
        external:
          name: webproxy
+
+volumes:
+  db-data:
+    name: ${COMPOSE_PROJECT_NAME}_db-data

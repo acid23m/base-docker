@@ -28,7 +28,7 @@ fi
 
 # define additional variables
 if [[ "$USE_LETSENCRYPT" = "yes" ]]; then
-    export LE_HOST=$SITE_DOMAIN
+    export LE_HOST=${SITE_DOMAIN:-}
 fi
 
 if [[ "$APP_MODE" = "prod" ]]; then

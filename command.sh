@@ -10,3 +10,5 @@ docker exec -it \
     -w /app \
     ${container_fpm} \
     bash
+
+exit 0

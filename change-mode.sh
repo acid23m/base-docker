@@ -26,3 +26,5 @@ else
         ${container_fpm} \
         php ./init --env=Development --overwrite=All
 fi
+
+exit 0
