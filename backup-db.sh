@@ -12,7 +12,7 @@ set -ae
 . ./.env
 set +a
 
-db_data_dir=/var/lib/postgresql/data
+db_data_dir=$POSTGRES_DATA
 
 docker run --rm --volumes-from ${COMPOSE_PROJECT_NAME}_db \
     -v $PWD/db/backup:/backup busybox:musl \

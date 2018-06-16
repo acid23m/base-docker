@@ -13,6 +13,7 @@ RUN apt update && \
 
 ENV LANG en_US.utf8
 #ENV LANG ru_RU.utf8
+ENV PHP_V 7.2
 
 RUN apt update && \
     apt dist-upgrade -y && \
@@ -26,30 +27,30 @@ RUN apt update && \
     add-apt-repository ppa:ondrej/php && \
     apt update && \
     apt install -ym --no-install-recommends --no-install-suggests \
-        php7.2 \
-        php7.2-bz2 \
-        php7.2-cli \
-        php7.2-common \
-        php7.2-curl \
-        php7.2-fpm \
-        php7.2-gd \
-        php7.2-intl \
-        php7.2-json \
-        php7.2-mbstring \
-        php7.2-opcache \
-        php7.2-sqlite3 \
-        php7.2-pgsql \
-        php7.2-mysql \
-        php7.2-xml \
-        php7.2-zip \
+        "php${PHP_V}" \
+        "php${PHP_V}-bz2" \
+        "php${PHP_V}-cli" \
+        "php${PHP_V}-common" \
+        "php${PHP_V}-curl" \
+        "php${PHP_V}-fpm" \
+        "php${PHP_V}-gd" \
+        "php${PHP_V}-intl" \
+        "php${PHP_V}-json" \
+        "php${PHP_V}-mbstring" \
+        "php${PHP_V}-opcache" \
+        "php${PHP_V}-sqlite3" \
+        "php${PHP_V}-pgsql" \
+        "php${PHP_V}-xml" \
+        "php${PHP_V}-zip" \
         php-imagick \
+        php-redis \
         php-ds && \
-    mkdir -p /etc/php/7.2/fpm/php-fpm.d /run/php && \
-    cp -a /etc/php/7.2/fpm/php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf.bak && \
-    echo "\ninclude=/etc/php/7.2/fpm/php-fpm.d/*.conf\n" >> /etc/php/7.2/fpm/php-fpm.conf && \
-    touch /run/php/php7.2-fpm.sock && \
-    chown www-data:www-data /run/php/php7.2-fpm.sock && \
-    chmod 666 /run/php/php7.2-fpm.sock && \
+    mkdir -p "/etc/php/${PHP_V}/fpm/php-fpm.d" /run/php && \
+    cp -a "/etc/php/${PHP_V}/fpm/php-fpm.conf" "/etc/php/${PHP_V}/fpm/php-fpm.conf.bak" && \
+    echo "\ninclude=/etc/php/${PHP_V}/fpm/php-fpm.d/*.conf\n" >> "/etc/php/${PHP_V}/fpm/php-fpm.conf" && \
+    touch "/run/php/php${PHP_V}-fpm.sock" && \
+    chown www-data:www-data "/run/php/php${PHP_V}-fpm.sock" && \
+    chmod 666 "/run/php/php${PHP_V}-fpm.sock" && \
     usermod -a -G www-data root && \
     curl -sS https://getcomposer.org/installer -o composer-setup.php && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
@@ -64,6 +65,6 @@ RUN mkdir -p /var/log/php /var/log/fpm && \
     touch /var/log/php/error.log /var/log/fpm/fpm.log && \
     ln -sf /dev/stderr /var/log/php/error.log
 
-CMD ["/usr/sbin/php-fpm7.2"]
+CMD "/usr/sbin/php-fpm${PHP_V}"
 
 EXPOSE 9000

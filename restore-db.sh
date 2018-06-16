@@ -20,7 +20,7 @@ if [[ ! -f "$PWD/db/backup/${backup_filename}" ]]; then
     exit 2
 fi
 
-db_data_dir=/var/lib/postgresql/data
+db_data_dir=$POSTGRES_DATA
 
 docker run --rm -v ${COMPOSE_PROJECT_NAME}_db-data:"${db_data_dir}":rw \
     -v $PWD/db/backup:/backup busybox:musl \

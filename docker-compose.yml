@@ -28,13 +28,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: php7.2:yii
+    image: "php${PHP_V}_yii:latest"
+    environment:
+      PHP_V: $PHP_V
     volumes:
       - ./app:/app
       - ./.env:/app/.env
-      - ./conf/php/fpm.conf:/etc/php/7.2/fpm/php-fpm.d/zz-fpm.conf:ro
-      - ./conf/php/php-${APP_MODE}.ini:/etc/php/7.2/cli/conf.d/zz-php.ini:ro
-      - ./conf/php/php-${APP_MODE}.ini:/etc/php/7.2/fpm/conf.d/zz-php.ini:ro
+      - "./conf/php/fpm.conf:/etc/php/${PHP_V}/fpm/php-fpm.d/zz-fpm.conf:ro"
+      - "./conf/php/php-${APP_MODE}.ini:/etc/php/${PHP_V}/cli/conf.d/zz-php.ini:ro"
+      - "./conf/php/php-${APP_MODE}.ini:/etc/php/${PHP_V}/fpm/conf.d/zz-php.ini:ro"
       - ./conf/composer/auth.json:/root/.composer/auth.json:ro
       - ./conf/composer/auth.json:/root/.config/composer/auth.json:ro
     restart: ${RESTART_MODE}
@@ -42,14 +44,15 @@ services:
       - db
   db:
     container_name: ${COMPOSE_PROJECT_NAME}_db
-    image: postgres:11-alpine
+    image: "postgres:${POSTGRES_V}-alpine"
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: ${POSTGRES_DATA}
     volumes:
-      - ./conf/postgresql:/etc/postgresql/10/main/conf.d
-      - db-data:/var/lib/postgresql/data
+      - "./conf/postgresql:/etc/postgresql/${POSTGRES_V}/main/conf.d"
+      - "db-data:${POSTGRES_DATA}"
     restart: ${RESTART_MODE}
 
 networks:
