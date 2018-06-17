@@ -55,11 +55,11 @@ services:
       - "db-data:${POSTGRES_DATA}"
     restart: ${RESTART_MODE}
 
+volumes:
+  db-data:
+    name: ${COMPOSE_PROJECT_NAME}_db-data
+
 networks:
     default:
        external:
          name: webproxy
-
-volumes:
-  db-data:
-    name: ${COMPOSE_PROJECT_NAME}_db-data
