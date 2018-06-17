@@ -12,8 +12,8 @@ set -ae
 . ./.env
 set +a
 
-# clear logs
-sudo rm -f ./logs/fpm/*.log ./logs/nginx/*.log ./logs/php/*.log ./logs/postgresql/*.log
+nginx_proxy_certs_dir=/opt/nginx-proxy/data/certs
+
 
 # create certificates
 if [[ ! -f "$PWD/conf/certs/dhparam.pem" ]]; then
@@ -29,6 +29,14 @@ fi
 # define additional variables
 if [[ "$USE_LETSENCRYPT" = "yes" ]]; then
     export LE_HOST=${SITE_DOMAIN:-}
+else
+    if [[ -d "${nginx_proxy_certs_dir}" ]]; then
+        if [[ ! -f "${nginx_proxy_certs_dir}/${SITE_DOMAIN}.crt" ]] || [[ ! -f "${nginx_proxy_certs_dir}/${SITE_DOMAIN}.key" ]]; then
+            sudo cp "$PWD/conf/certs/self-signed.crt" "${nginx_proxy_certs_dir}/${SITE_DOMAIN}.crt"
+            sudo cp "$PWD/conf/certs/self-signed.key" "${nginx_proxy_certs_dir}/${SITE_DOMAIN}.key"
+            sudo chown root:root "${nginx_proxy_certs_dir}/${SITE_DOMAIN}.crt" "${nginx_proxy_certs_dir}/${SITE_DOMAIN}.key"
+        fi
+    fi
 fi
 
 if [[ "$APP_MODE" = "prod" ]]; then
