@@ -47,7 +47,7 @@ Use script *install.sh* to install application.
 - **/logs**: server logs.
 
 It is recommend store attributes of files/folders
-while moving application to another destination.
+while moving application to another destination (without VCS).
 
 ```bash
 tar -czv --preserve-permissions --same-owner -f my-site.tar.gz my-site.com/
