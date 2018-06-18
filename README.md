@@ -2,7 +2,6 @@
 
 All operations must be done in project directory root.
 Web application always use HTTPS protocol.
-It is recommended to use this with [nginx-proxy](https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion).
 
 ## Configuration
 
@@ -44,7 +43,6 @@ Use script *install.sh* to install application.
 - **/bin**: executable files.
 - **/conf**: software settings.
 - **/db**: database\'s backups.
-- **/logs**: server logs.
 
 It is recommend store attributes of files/folders
 while moving application to another destination (without VCS).
