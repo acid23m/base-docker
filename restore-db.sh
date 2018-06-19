@@ -13,7 +13,11 @@ set -ae
 set +a
 
 # define backup
-read -p "Enter backup filename from /db/backup without path: " backup_filename
+if [[ -z $1 ]]; then
+    read -p "Enter backup filename from /db/backup without path: " backup_filename
+else
+    backup_filename=$1
+fi
 
 if [[ ! -f "$PWD/db/backup/${backup_filename}" ]]; then
     echo "File not found."
