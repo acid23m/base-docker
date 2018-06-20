@@ -12,6 +12,8 @@ set -ae
 . ./.env
 set +a
 
+container_fpm=${COMPOSE_PROJECT_NAME}_fpm
+
 # create certificates
 if [[ ! -f "$PWD/conf/certs/dhparam.pem" ]]; then
     openssl dhparam -out ./conf/certs/dhparam.pem 2048
@@ -35,5 +37,12 @@ fi
 
 # run containers
 docker-compose -p $COMPOSE_PROJECT_NAME up -d --build
+
+# add user
+if [[ $(id -u) != 0 ]]; then
+    docker exec -i \
+        ${container_fpm} \
+        useradd -M -u 1000 -G www-data $(id -un)
+fi
 
 exit 0
