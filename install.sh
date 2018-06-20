@@ -14,6 +14,18 @@ set +a
 
 container_fpm=${COMPOSE_PROJECT_NAME}_fpm
 
+# app dir permissions
+permissions() {
+    if [[ $(id -u) -eq 0 ]]; then
+        sudo "$PWD/bin/access" -u www-data -p "$PWD/app/"
+        sudo chown -R www-data:www-data .
+    else
+        sudo "$PWD/bin/access" -u $(id -un) -p "$PWD/app/"
+        sudo chown -R `id -un`:www-data .
+    fi
+}
+
+
 # create configs
 cp -a "$PWD/app/common/config/app.example.ini" "$PWD/app/common/config/app.ini"
 cp -a "$PWD/app/common/config/maintance.example.ini" "$PWD/app/common/config/maintance.ini"
@@ -45,6 +57,8 @@ else
         php ./init --env=Development --overwrite=All
 fi
 
+permissions
+
 # create db
 docker exec -i \
     -w /app \
@@ -75,13 +89,6 @@ docker exec -i \
     ${container_fpm} \
     php ./yii access-user/create "${MAIN_USER_NAME}" "${MAIN_USER_EMAIL}" "${MAIN_USER_PASSWORD}" root --force=yes
 
-# app dir permissions
-if [[ $(id -u) -eq 0 ]]; then
-    sudo "$PWD/bin/access" -u www-data -p "$PWD/app/"
-    sudo chown -R www-data:www-data .
-else
-    sudo "$PWD/bin/access" -u $(id -un) -p "$PWD/app/"
-    sudo chown -R `id -un`:www-data .
-fi
+permissions
 
 exit 0
