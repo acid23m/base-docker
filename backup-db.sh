@@ -14,8 +14,15 @@ set +a
 
 db_data_dir=$POSTGRES_DATA
 
+# define backup
+if [[ -z $1 ]]; then
+    backup_filename=backup-`date +"%Y%m%d"`.tgz
+else
+    backup_filename=$1
+fi
+
 docker run --rm --volumes-from ${COMPOSE_PROJECT_NAME}_db \
     -v $PWD/db/backup:/backup busybox:musl \
-    tar -cz -f /backup/backup-$(date +"%Y%m%d").tgz "$db_data_dir"
+    tar -cz -f "/backup/$backup_filename" "$db_data_dir"
 
 exit 0
