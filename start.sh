@@ -16,10 +16,10 @@ container_fpm=${COMPOSE_PROJECT_NAME}_fpm
 
 # create certificates
 if [[ ! -f "$PWD/conf/certs/dhparam.pem" ]]; then
-    openssl dhparam -out ./conf/certs/dhparam.pem 2048
+    openssl dhparam -out ./conf/certs/dhparam.pem -dsaparam 4096
 fi
 if [[ ! -f "$PWD/conf/certs/self-signed.key" ]] || [[ ! -f "$PWD/conf/certs/self-signed.crt" ]]; then
-    openssl req -x509 -nodes -newkey rsa:2048 -days 36500 -keyout \
+    openssl req -x509 -nodes -newkey rsa:4096 -days 36500 -keyout \
         ./conf/certs/self-signed.key -out \
         ./conf/certs/self-signed.crt \
         -subj /C=AA/ST=AA/L=Internet/O=MailInABox/CN=APP
