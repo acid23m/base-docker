@@ -18,10 +18,10 @@ container_fpm=${COMPOSE_PROJECT_NAME}_fpm
 if [[ ! -f "$PWD/conf/certs/dhparam.pem" ]]; then
     openssl dhparam -out ./conf/certs/dhparam.pem -dsaparam 4096
 fi
-if [[ ! -f "$PWD/conf/certs/self-signed.key" ]] || [[ ! -f "$PWD/conf/certs/self-signed.crt" ]]; then
-    openssl req -x509 -nodes -newkey rsa:4096 -days 36500 -keyout \
-        ./conf/certs/self-signed.key -out \
-        ./conf/certs/self-signed.crt \
+if [[ ! -f "$PWD/conf/certs/cert.key" ]] || [[ ! -f "$PWD/conf/certs/cert.crt" ]]; then
+    openssl req -x509 -nodes -newkey rsa:4096 -days 36500 \
+        -keyout "$PWD/conf/certs/cert.key" \
+        -out "$PWD/conf/certs/cert.crt" \
         -subj "/C=RU/ST=RU/L=Internet/O=$(hostname -s)/CN=${SITE_DOMAIN}"
 fi
 
