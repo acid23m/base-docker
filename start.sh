@@ -22,7 +22,7 @@ if [[ ! -f "$PWD/conf/certs/self-signed.key" ]] || [[ ! -f "$PWD/conf/certs/self
     openssl req -x509 -nodes -newkey rsa:4096 -days 36500 -keyout \
         ./conf/certs/self-signed.key -out \
         ./conf/certs/self-signed.crt \
-        -subj /C=AA/ST=AA/L=Internet/O=MailInABox/CN=APP
+        -subj "/C=RU/ST=RU/L=Internet/O=$(hostname -s)/CN=${SITE_DOMAIN}"
 fi
 
 if [[ "$APP_MODE" = "prod" ]]; then
