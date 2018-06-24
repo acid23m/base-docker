@@ -68,7 +68,7 @@ docker exec -i \
 # request for auto generating db
 curl \
     --connect-timeout 60 \
-    --http2 \
+    --http1.1 \
     --insecure \
     --keepalive-time 60 \
     --location \
