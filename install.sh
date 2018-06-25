@@ -21,7 +21,7 @@ permissions() {
         sudo chown -R www-data:www-data .
     else
         sudo "$PWD/bin/access" -u $(id -un) -p "$PWD/app/"
-        sudo chown -R `id -un`:www-data .
+        sudo chown -R $(id -un):www-data .
     fi
 }
 
