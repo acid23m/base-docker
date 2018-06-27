@@ -23,7 +23,7 @@ nano ./app/environments/prod/common/main-local.php
 
 ## Containers
 
-Use script *run.sh* to create and launch docker containers.
+Use script *start.sh* to create and launch docker containers.
 
 ```bash
 ./start.sh
