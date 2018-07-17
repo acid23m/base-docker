@@ -22,7 +22,8 @@ services:
       dockerfile: Dockerfile
     image: "php-composer:${PHP_V}"
     environment:
-      PHP_V: $PHP_V
+      PHP_V: ${PHP_V}
+      LANG: ${LOCALE}
     volumes:
       - ./app:/app
       - ./.env:/app/.env
@@ -42,6 +43,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: ${POSTGRES_DATA}
+      LANG: ${LOCALE}
     volumes:
       - "./conf/postgresql:/etc/postgresql/${POSTGRES_V}/main/conf.d"
       - "db-data:${POSTGRES_DATA}"

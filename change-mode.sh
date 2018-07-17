@@ -27,4 +27,9 @@ else
         php ./init --env=Development --overwrite=All
 fi
 
+docker exec -i \
+    -w /app \
+    ${container_fpm} \
+    php ./yii migrate --interactive=0
+
 exit 0

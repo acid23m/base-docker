@@ -27,12 +27,8 @@ fi
 
 if [[ "$APP_MODE" = "prod" ]]; then
     export DB_NAME=$DB_NAME_PROD
-    export DB_USER=$DB_USER_PROD
-    export DB_PASSWORD=$DB_PASSWORD_PROD
 else
     export DB_NAME=$DB_NAME_DEV
-    export DB_USER=$DB_USER_DEV
-    export DB_PASSWORD=$DB_PASSWORD_DEV
 fi
 
 # run containers
