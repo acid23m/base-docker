@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "php${PHP_V}_yii:latest"
+    image: "php-composer:${PHP_V}"
     environment:
       PHP_V: $PHP_V
     volumes:

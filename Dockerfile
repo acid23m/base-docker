@@ -24,7 +24,7 @@ RUN apt update && \
         curl \
         cron \
         git && \
-    add-apt-repository ppa:ondrej/php && \
+    add-apt-repository -y ppa:ondrej/php && \
     apt update && \
     apt install -ym --no-install-recommends --no-install-suggests \
         "php${PHP_V}" \
