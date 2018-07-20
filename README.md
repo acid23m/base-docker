@@ -9,6 +9,7 @@ First of all define global environment variables in .env file.
 Create .env file from template .env.example.
 
 ```bash
+rm -rf .git
 cp -a ./.env.example ./.env
 nano ./.env
 ```
@@ -61,10 +62,11 @@ rsync -av wuser@123.456.789.000:/var/www/my-site.com /home/user/backup/
 
 - **start.sh**: launch application - start containers and create volume.
 - **stop.sh**: stop application - stop and remove containers.
-- **install.sh**: deploy application.
+- **install.sh**: deploy application. Edit script depending app version.
 - **change-mode.sh**: change application mode (*prod|dev*) defined in .env.
 - **command.sh**: start command line inside app container at */app* work directory.
 - **composer-update.sh**: update application packages.
 - **backup-db.sh**: create gziped tar archive *backup-\[Ymd\]).tgz* at *./db/backup* directory from volume.
+Usage: ./backup-db.sh [dump name]
 - **restore-db.sh**: unpack archive at *./db/backup* directory to volume.
 STOP CONTAINERS BEFORE RESTORE!
