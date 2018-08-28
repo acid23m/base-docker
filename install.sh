@@ -44,6 +44,11 @@ else
         composer install --prefer-dist --no-suggest --optimize-autoloader
 fi
 
+docker exec -i \
+    -w /app \
+    ${container_fpm} \
+    composer clear-cache
+
 # init framework
 if [[ "$APP_MODE" = "prod" ]]; then
     docker exec -i \

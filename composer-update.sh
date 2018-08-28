@@ -23,4 +23,9 @@ else
         composer update --prefer-dist --optimize-autoloader
 fi
 
+docker exec -i \
+    -w /app \
+    ${container_fpm} \
+    composer clear-cache
+
 exit 0
