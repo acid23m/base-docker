@@ -26,11 +26,6 @@ permissions() {
 }
 
 
-# create configs
-cp -a "$PWD/app/common/config/app.example.ini" "$PWD/app/common/config/app.ini"
-cp -a "$PWD/app/common/config/maintance.example.ini" "$PWD/app/common/config/maintance.ini"
-cp -a "$PWD/app/common/config/script.example.ini" "$PWD/app/common/config/script.ini"
-
 # install dependencies
 if [[ "$APP_MODE" = "prod" ]]; then
     docker exec -i \
@@ -80,7 +75,7 @@ curl \
     --silent \
     --show-error \
     --head \
-    --url "http://${SITE_DOMAIN}/admin"
+    --url "http://${SITE_DOMAIN}/admin" || true
 
 # create RBAC config
 docker exec -i \

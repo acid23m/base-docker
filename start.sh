@@ -25,6 +25,7 @@ if [[ ! -f "$PWD/conf/certs/cert.key" ]] || [[ ! -f "$PWD/conf/certs/cert.crt" ]
         -subj "/C=RU/ST=RU/L=Internet/O=$(hostname -s)/CN=${SITE_DOMAIN}"
 fi
 
+# define database
 if [[ "$APP_MODE" = "prod" ]]; then
     export DB_NAME=$DB_NAME_PROD
 else
@@ -32,7 +33,7 @@ else
 fi
 
 # run containers
-docker-compose -p $COMPOSE_PROJECT_NAME up -d --build
+docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build
 
 # add user
 if [[ $(id -u) != 0 ]]; then

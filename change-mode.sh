@@ -13,6 +13,18 @@ set -ae
 set +a
 
 container_fpm=${COMPOSE_PROJECT_NAME}_fpm
+container_db=${COMPOSE_PROJECT_NAME}_db
+
+# define database
+if [[ "$APP_MODE" = "prod" ]]; then
+    DB_NAME=$DB_NAME_PROD
+else
+    DB_NAME=$DB_NAME_DEV
+fi
+
+docker exec -i \
+    ${container_db} \
+    createdb -U ${DB_USER} -O ${DB_USER} -e ${DB_NAME} || true
 
 # init framework
 if [[ "$APP_MODE" = "prod" ]]; then

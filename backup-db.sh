@@ -23,6 +23,6 @@ fi
 
 docker run --rm --volumes-from ${COMPOSE_PROJECT_NAME}_db \
     -v $PWD/db/backup:/backup busybox:musl \
-    tar -cz -f "/backup/$backup_filename" "$db_data_dir"
+    tar -cz -f "/backup/${backup_filename}" "$db_data_dir"
 
 exit 0
