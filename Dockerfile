@@ -11,9 +11,12 @@ RUN apt update && \
     apt autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV LANG en_US.utf8
-#ENV LANG ru_RU.utf8
-ENV PHP_V 7.2
+ARG LANG_VAR=en_US.utf8
+#ARG LANG_VAR=ru_RU.utf8
+ENV LANG $LANG_VAR
+
+ARG PHP_VERSION=7.2
+ENV PHP_V $PHP_VERSION
 
 RUN apt update && \
     apt dist-upgrade -y && \
