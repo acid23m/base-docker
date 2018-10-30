@@ -42,4 +42,22 @@ if [[ $(id -u) != 0 ]]; then
         useradd -M -u 1000 -G www-data $(id -un)
 fi
 
+# update os and install additional soft
+docker exec -i \
+    ${container_fpm} \
+    bash -c \
+        "apt update && apt dist-upgrade -y && apt full-upgrade -y"
+
+if [ -n "${ADDITIONAL_SOFT_LIST}" ]; then
+    docker exec -i \
+        ${container_fpm} \
+        bash -c \
+            "apt install -ym --no-install-recommends --no-install-suggests ${ADDITIONAL_SOFT_LIST}"
+fi
+
+docker exec -i \
+    ${container_fpm} \
+    bash -c \
+        "apt autoclean -y && apt autoremove -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*"
+
 exit 0

@@ -40,6 +40,7 @@ RUN apt update && \
         "php${PHP_V}-opcache" \
         "php${PHP_V}-sqlite3" \
         "php${PHP_V}-pgsql" \
+        "php${PHP_V}-mysql" \
         "php${PHP_V}-xml" \
         "php${PHP_V}-zip" \
         php-imagick \
@@ -49,6 +50,7 @@ RUN apt update && \
     cp -a "/etc/php/${PHP_V}/fpm/php-fpm.conf" "/etc/php/${PHP_V}/fpm/php-fpm.conf.bak" && \
     echo "\ninclude=/etc/php/${PHP_V}/fpm/php-fpm.d/*.conf\n" >> "/etc/php/${PHP_V}/fpm/php-fpm.conf" && \
     touch "/run/php/php${PHP_V}-fpm.sock" && \
+    ln -sf "/usr/sbin/php-fpm${PHP_V}" /usr/sbin/php-fpm && \
     chown www-data:www-data "/run/php/php${PHP_V}-fpm.sock" && \
     chmod 666 "/run/php/php${PHP_V}-fpm.sock" && \
     usermod -a -G www-data root && \
