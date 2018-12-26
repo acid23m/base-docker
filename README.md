@@ -9,8 +9,8 @@ First of all define global environment variables in .env file.
 Create .env file from template .env.example.
 
 ```bash
-rm -rf .git
 cp -a ./.env.example ./.env
+chmod 640 ./.env*
 nano ./.env
 ```
 
@@ -20,6 +20,25 @@ environment configuration files.
 ```bash
 nano ./app/environments/dev/common/main-local.php
 nano ./app/environments/prod/common/main-local.php
+```
+
+Script, which updates project permissions, can be configured.
+
+```bash
+nano ./conf/appperm/appperm.yml
+```
+
+Protect your project by setting access rights.
+
+```bash
+chown -R $(id -un):$(id -gn) .
+find . -type d -exec chmod 750 {} \;
+find . -type f -exec chmod 640 {} \;
+find ./conf/ -type d -exec chmod 755 {} \;
+find ./conf/ -type f -exec chmod 644 {} \;
+chmod u+x ./*.sh
+chmod u+x ./bin/*
+bin/appperm -c conf/appperm/appperm.yml -u $(id -un) app/
 ```
 
 ## Containers

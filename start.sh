@@ -35,11 +35,20 @@ fi
 # run containers
 docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build
 
-# add user
+# add user and update permissions
 if [[ $(id -u) != 0 ]]; then
     docker exec -i \
         ${container_fpm} \
         useradd -M -u 1000 -G www-data $(id -un)
+    docker exec -i \
+        -w /app \
+        ${container_fpm} \
+        chown -R 1000:www-data .
+else
+    .docker exec -i \
+        -w /app \
+        ${container_fpm} \
+        chown -R www-data:www-data .
 fi
 
 # update os and install additional soft
