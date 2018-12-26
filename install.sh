@@ -17,10 +17,10 @@ container_fpm=${COMPOSE_PROJECT_NAME}_fpm
 # app dir permissions
 permissions() {
     if [[ $(id -u) -eq 0 ]]; then
-        sudo "$PWD/bin/access" -u www-data -p "$PWD/app/"
+        sudo "$PWD/bin/appperm" -c "$PWD/conf/appperm/appperm.yml" -u www-data "$PWD/app/"
         sudo chown -R www-data:www-data .
     else
-        sudo "$PWD/bin/access" -u $(id -un) -p "$PWD/app/"
+        sudo "$PWD/bin/appperm" -c "$PWD/conf/appperm/appperm.yml" -u $(id -un) "$PWD/app/"
         sudo chown -R $(id -un):www-data .
     fi
 }

@@ -1,0 +1,58 @@
+# default values
+default:
+#  user: user
+  group: www-data
+  dir_mode: 755
+  file_mode: 644
+
+# list of files or directories
+# that has own mode
+special:
+  #  paths that are relative to project directory
+  # - /some/folder: 777
+  # it is possible to use shell-style wildcards
+  # - /.en*: 640
+  # - /**/.ht*: 640
+  # - /*.sh: 754
+  # also paths with wildcards can be separated with marks "f" and "d"
+  # - /temp: 775
+  # - /temp/*: 775:d
+  # - /temp/*: 664:f
+  - .env: 640
+  - .ht*: 640
+  - /**/.ht*: 640
+  - /*/runtime: 775
+  - /*/runtime/*: 775:d
+  - /*/runtime/*: 664:f
+  - /*/runtime/**/*: 775:d
+  - /*/runtime/**/*: 664:f
+  - /*/web/assets: 775
+  - userdata: 775
+  - userdata/*: 775:d
+  - userdata/**/*: 775:d
+  - userdata/*: 664:f
+  - userdata/**/*: 664:f
+  - maintenance: 775
+  - dumps: 775
+  - dumps/*: 775:d
+  - dumps/*: 664:f
+  - common/data: 775
+  - common/data/*: 775:d
+  - common/data/**/*: 775:d
+  - common/data/*: 664:f
+  - common/data/**/*: 664:f
+  - common/data/*.db: 660:f
+  - common/data/*.ini: 660:f
+  - common/data/.*.ini: 660:f
+  - common/data/*.script: 660:f
+  - common/data/.*.script: 660:f
+  - vendor: 775
+  - vendor/bin/*: 774
+  - vendor/bin/**/*: 774
+  - vendor/codeception/base/codecept: 774
+  - vendor/cebe/markdown/bin/markdown: 774
+  - vendor/phpunit/phpunit/phpunit: 774
+  - vendor/yiisoft/yii2/yii: 774
+  - init: 774
+  - yii: 774
+  - yii_test: 774
