@@ -45,7 +45,7 @@ if [[ $(id -u) != 0 ]]; then
         ${container_fpm} \
         chown -R 1000:www-data .
 else
-    .docker exec -i \
+    docker exec -i \
         -w /app \
         ${container_fpm} \
         chown -R www-data:www-data .

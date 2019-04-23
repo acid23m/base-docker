@@ -15,12 +15,20 @@ if [[ "$APP_MODE" = "prod" ]]; then
     docker exec -i \
         -w /app \
         ${container_fpm} \
-        composer update --prefer-dist --no-dev --optimize-autoloader
+        composer update --prefer-dist --no-dev --no-suggest --optimize-autoloader
+    docker exec -i \
+        -w /app \
+        ${container_fpm} \
+        composer dump-autoload --optimize --no-dev --classmap-authoritative
 else
     docker exec -i \
         -w /app \
         ${container_fpm} \
-        composer update --prefer-dist --optimize-autoloader
+        composer update --prefer-dist --optimize-autoloader -vvv
+    docker exec -i \
+        -w /app \
+        ${container_fpm} \
+        composer dump-autoload --optimize -vvv
 fi
 
 docker exec -i \

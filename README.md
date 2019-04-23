@@ -1,7 +1,7 @@
 # Dockerized Yii based application
 
-All operations must be done in project directory root.
-Web application always use HTTPS protocol.
+**All operations must be done in project's root directory.
+Web application always use HTTPS protocol.**
 
 ## Configuration
 
@@ -43,15 +43,21 @@ bin/appperm -c conf/appperm/appperm.yml -u $(id -un) app/
 
 ## Containers
 
-Use script *start.sh* to create and launch docker containers.
+Use script `start.sh` to create and launch docker containers.
 
 ```bash
 ./start.sh
 ```
 
+Use script `stop.sh` to stop and remove docker containers.
+
+```bash
+./stop.sh
+```
+
 ## Install
 
-Use script *install.sh* to install application.
+Use script `install.sh` to install application.
 
 ```bash
 ./install.sh
@@ -62,7 +68,7 @@ Use script *install.sh* to install application.
 - **/app**: site directory. The owner of this folder must be *{$USER}:www-data*.
 - **/bin**: executable files.
 - **/conf**: software settings.
-- **/db**: database\'s backups.
+- **/db**: database's backups.
 
 It is recommend store attributes of files/folders
 while moving application to another destination (without VCS).
@@ -84,7 +90,7 @@ rsync -av wuser@123.456.789.000:/var/www/my-site.com /home/user/backup/
 - **install.sh**: deploy application. Edit script depending app version.
 - **change-mode.sh**: change application mode (*prod|dev*) defined in .env.
 - **command.sh**: start command line inside app container at */app* work directory.
-- **composer-update.sh**: update application packages.
+- **composer-update.sh**: update application packages. RUN IT EVERY TIME YOU DEPLOY UPDATES ON PRODUCTION SERVER.
 - **backup-db.sh**: create gziped tar archive *backup-\[Ymd\]).tgz* at *./db/backup* directory from volume.
 Usage: ./backup-db.sh [dump name]
 - **restore-db.sh**: unpack archive at *./db/backup* directory to volume.

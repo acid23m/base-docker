@@ -1,4 +1,7 @@
-FROM ubuntu:18.04
+ARG UBUNTU_VERSION=18.04
+FROM ubuntu:${UBUNTU_VERSION}
+
+ENV UBUNTU_V $UBUNTU_VERSION
 
 RUN apt update && \
     apt upgrade -y && \
@@ -15,7 +18,7 @@ ARG LANG_VAR=en_US.utf8
 #ARG LANG_VAR=ru_RU.utf8
 ENV LANG $LANG_VAR
 
-ARG PHP_VERSION=7.2
+ARG PHP_VERSION=7.3
 ENV PHP_V $PHP_VERSION
 
 RUN apt update && \
@@ -23,10 +26,12 @@ RUN apt update && \
     apt full-upgrade -y && \
     apt install -ym --no-install-recommends --no-install-suggests \
         software-properties-common \
+        openssl \
         wget \
         curl \
         cron \
-        git && \
+        git \
+        supervisor && \
     add-apt-repository -y ppa:ondrej/php && \
     apt update && \
     apt install -ym --no-install-recommends --no-install-suggests \
@@ -70,6 +75,10 @@ RUN mkdir -p /var/log/php /var/log/fpm && \
     touch /var/log/php/error.log /var/log/fpm/fpm.log && \
     ln -sf /dev/stderr /var/log/php/error.log
 
-CMD "/usr/sbin/php-fpm${PHP_V}"
+WORKDIR /app
+ENV PATH ${PATH}:/app
+
+#CMD ["/usr/sbin/php-fpm${PHP_V}"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
 
 EXPOSE 9000

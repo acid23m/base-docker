@@ -32,11 +32,19 @@ if [[ "$APP_MODE" = "prod" ]]; then
         -w /app \
         ${container_fpm} \
         composer install --prefer-dist --no-dev --no-suggest --optimize-autoloader
+    docker exec -i \
+        -w /app \
+        ${container_fpm} \
+        composer dump-autoload --optimize --no-dev --classmap-authoritative
 else
     docker exec -i \
         -w /app \
         ${container_fpm} \
         composer install --prefer-dist --no-suggest --optimize-autoloader
+    docker exec -i \
+        -w /app \
+        ${container_fpm} \
+        composer dump-autoload --optimize
 fi
 
 docker exec -i \
@@ -77,17 +85,11 @@ curl \
     --head \
     --url "http://${SITE_DOMAIN}/admin" || true
 
-# create RBAC config
+# create additional directories
 docker exec -i \
     -w /app \
     ${container_fpm} \
-    php ./yii access-user/rbac
-
-# create user
-docker exec -i \
-    -w /app \
-    ${container_fpm} \
-    php ./yii access-user/create "${MAIN_USER_NAME}" "${MAIN_USER_EMAIL}" "${MAIN_USER_PASSWORD}" root --force=yes
+    bash -c "mkdir -p ./userdata/files/uploads ./userdata/images/uploads"
 
 permissions
 
