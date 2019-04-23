@@ -37,9 +37,6 @@ services:
     restart: ${RESTART_MODE}
     depends_on:
       - db
-      - cache
-      - search
-      - queue
   db:
     container_name: ${COMPOSE_PROJECT_NAME}_db
     image: "postgres:${POSTGRES_V}-alpine"
