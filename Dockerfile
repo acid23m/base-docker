@@ -28,6 +28,7 @@ RUN apt update && \
         software-properties-common \
         openssl \
         wget \
+        zip unzip \
         curl \
         cron \
         git \
@@ -66,6 +67,7 @@ RUN apt update && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     rm composer-setup.php && \
     mkdir -p /root/.composer /root/.config/composer && \
+    composer global require hirak/prestissimo --prefer-dist --no-suggest --optimize-autoloader && \
     apt clean && \
     apt autoclean -y && \
     apt autoremove -y && \

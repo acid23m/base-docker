@@ -25,6 +25,10 @@ services:
         LANG_VAR: ${LOCALE}
         PHP_VERSION: ${PHP_V}
     image: "php-composer-supervisor:${UBUNTU_V}_${PHP_V}"
+    environment:
+      OS_USER_NAME: ${OS_USER_NAME}
+      OS_USER_ID: ${OS_USER_ID}
+      COMPOSER_ALLOW_SUPERUSER: 1
     volumes:
       - ./app:/app
       - ./.env:/app/.env
@@ -34,6 +38,8 @@ services:
       - "./conf/php/php-${APP_MODE}.ini:/etc/php/${PHP_V}/fpm/conf.d/zz-php.ini:ro"
       - ./conf/composer/auth.json:/root/.composer/auth.json:ro
       - ./conf/composer/auth.json:/root/.config/composer/auth.json:ro
+    tmpfs:
+      - /tmp
     restart: ${RESTART_MODE}
     depends_on:
       - db
