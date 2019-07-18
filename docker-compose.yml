@@ -40,6 +40,8 @@ services:
       - ./conf/composer/auth.json:/root/.config/composer/auth.json:ro
     tmpfs:
       - /tmp
+    extra_hosts:
+      - "dockerhost:${DOCKERHOST_IP}"
     restart: ${RESTART_MODE}
     depends_on:
       - db

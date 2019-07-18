@@ -7,14 +7,15 @@
 # make [command] - runs specific command
 #
 
+SHELL=/bin/bash
+#.SHELLFLAGS = -a
+
 PROJECT_DIR=${PWD}
 APP_DIR=$(PROJECT_DIR)/app
 CONF_DIR=$(PROJECT_DIR)/conf
 CONF_CERTS_DIR=$(CONF_DIR)/certs
 DB_BACKUP_DIR=$(PROJECT_DIR)/db/backup
-
-SHELL=/bin/bash
-#.SHELLFLAGS = -a
+HOST_IP=$(shell ip -4 addr show scope global dev docker0 | grep inet | awk '{print $$2}' | cut -d / -f 1)
 
 DEFAULT_GOAL := help
 .PHONY: help
@@ -22,7 +23,7 @@ help:
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36m%-27s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 
-# ensures of existing .env file
+# ensure of existing .env file
 $(PROJECT_DIR)/.env: $(PROJECT_DIR)/.env.example
 	@if [[ -f $@ ]]; then \
 		echo "The $(<F) file has changed. Please check your $(@F) file."; \
@@ -171,20 +172,19 @@ $(CONF_CERTS_DIR)/cert.%: $(CONF_CERTS_DIR)/dhparam.pem
 start: $(PROJECT_DIR)/.env $(CONF_CERTS_DIR)/dhparam.pem $(CONF_CERTS_DIR)/cert.% ## Runs project.
 	# defines database and runs containers
 	@if [[ "${APP_MODE}" == "prod" ]]; then \
-		(export DB_NAME=${DB_NAME_PROD} && docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build --remove-orphans --no-recreate); \
+		(export DOCKERHOST_IP=${HOST_IP} DB_NAME=${DB_NAME_PROD} && docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build --remove-orphans --no-recreate); \
 	else \
-		(export DB_NAME=${DB_NAME_DEV} && docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build --remove-orphans --no-recreate); \
+		(export DOCKERHOST_IP=${HOST_IP} DB_NAME=${DB_NAME_DEV} && docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build --remove-orphans --no-recreate); \
 	fi
-	@docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build --remove-orphans --no-recreate
 	# adds user and update permissions
 	@if [[ "${OS_USER_NAME}" != "root" ]] && [[ ${OS_USER_ID} -ne 0 ]]; then \
 		docker exec -i \
 			$(CONTAINER_FPM) \
-			useradd -M -u ${OS_USER_ID} -U -G www-data ${OS_USER_NAME};\
+			useradd -M -u ${OS_USER_ID} -U -G www-data ${OS_USER_NAME}; \
 		docker exec -i \
 			-w /app \
 			$(CONTAINER_FPM) \
-			chown -R ${OS_USER_ID}:www-data .;\
+			chown -R ${OS_USER_ID}:www-data .; \
 	fi
 	# installs additional software
 	@if [[ '$(expr length "${ADDITIONAL_SOFT_LIST}")' != "0" ]]; then \
