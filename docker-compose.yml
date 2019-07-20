@@ -24,11 +24,11 @@ services:
         UBUNTU_VERSION: ${UBUNTU_V}
         LANG_VAR: ${LOCALE}
         PHP_VERSION: ${PHP_V}
+        COMPOSER_AUTH_VAR: ${COMPOSER_AUTH_DATA}
     image: "php-composer-supervisor:${UBUNTU_V}_${PHP_V}"
     environment:
       OS_USER_NAME: ${OS_USER_NAME}
       OS_USER_ID: ${OS_USER_ID}
-      COMPOSER_ALLOW_SUPERUSER: 1
     volumes:
       - ./app:/app
       - ./.env:/app/.env
@@ -36,8 +36,6 @@ services:
       - "./conf/php/fpm.conf:/etc/php/${PHP_V}/fpm/php-fpm.d/zz-fpm.conf:ro"
       - "./conf/php/php-${APP_MODE}.ini:/etc/php/${PHP_V}/cli/conf.d/zz-php.ini:ro"
       - "./conf/php/php-${APP_MODE}.ini:/etc/php/${PHP_V}/fpm/conf.d/zz-php.ini:ro"
-      - ./conf/composer/auth.json:/root/.composer/auth.json:ro
-      - ./conf/composer/auth.json:/root/.config/composer/auth.json:ro
     tmpfs:
       - /tmp
     extra_hosts:

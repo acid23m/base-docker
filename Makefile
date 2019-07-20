@@ -176,7 +176,7 @@ start: $(PROJECT_DIR)/.env $(CONF_CERTS_DIR)/dhparam.pem $(CONF_CERTS_DIR)/cert.
 	else \
 		(export DOCKERHOST_IP=${HOST_IP} DB_NAME=${DB_NAME_DEV} && docker-compose -p ${COMPOSE_PROJECT_NAME} up -d --build --remove-orphans --no-recreate); \
 	fi
-	# adds user and update permissions
+	# adds user and updates permissions
 	@if [[ "${OS_USER_NAME}" != "root" ]] && [[ ${OS_USER_ID} -ne 0 ]]; then \
 		docker exec -i \
 			$(CONTAINER_FPM) \

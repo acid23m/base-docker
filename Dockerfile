@@ -21,6 +21,10 @@ ENV LANG $LANG_VAR
 ARG PHP_VERSION=7.3
 ENV PHP_V $PHP_VERSION
 
+ARG COMPOSER_AUTH_VAR={}
+ENV COMPOSER_AUTH $COMPOSER_AUTH_VAR
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
 RUN apt update && \
     apt dist-upgrade -y && \
     apt full-upgrade -y && \
@@ -37,6 +41,7 @@ RUN apt update && \
     apt update && \
     apt install -ym --no-install-recommends --no-install-suggests \
         "php${PHP_V}" \
+        "php${PHP_V}-bcmath" \
         "php${PHP_V}-bz2" \
         "php${PHP_V}-cli" \
         "php${PHP_V}-common" \
