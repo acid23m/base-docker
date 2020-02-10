@@ -37,7 +37,7 @@ RUN apt update && \
         cron \
         git \
         supervisor && \
-    add-apt-repository -y ppa:ondrej/php && \
+    LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
     apt update && \
     apt install -ym --no-install-recommends --no-install-suggests \
         "php${PHP_V}" \
